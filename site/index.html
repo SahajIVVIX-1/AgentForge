@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AgentForge</title>
+  <meta name="description" content="AgentForge is a multi-agent research assistant built with CrewAI, FastAPI and React. Every cited source comes from a real search or page fetch, and failed runs are shown as failures.">
+  <meta name="color-scheme" content="light dark">
+  <meta property="og:title" content="AgentForge">
+  <meta property="og:description" content="A multi-agent research assistant that shows its sources and its failures.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2312163a'/%3E%3Ccircle cx='9' cy='10' r='4' fill='%238d93ff'/%3E%3Ccircle cx='9' cy='23' r='4' fill='%238d93ff' opacity='.6'/%3E%3Ccircle cx='24' cy='16' r='4' fill='%23ffffff'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&amp;family=Instrument+Sans:wght@400;500;600&amp;family=JetBrains+Mono&amp;display=swap" rel="stylesheet">
+  <script>document.documentElement.classList.add('js')</script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="top">
+    <div class="wrap top-row">
+      <a class="brand" href="#top" aria-label="AgentForge home">
+        <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+          <path d="M6 7l7 6M6 19l7-6M13 13h8" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <circle cx="6" cy="7" r="3" fill="var(--accent)"/>
+          <circle cx="6" cy="19" r="3" fill="var(--accent)" opacity=".6"/>
+          <circle cx="21" cy="13" r="3" fill="currentColor"/>
+        </svg>
+        <span>AgentForge</span>
+      </a>
+      <nav aria-label="Page sections">
+        <a href="#pipeline">Pipeline</a>
+        <a href="#design">Design</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#status">Status</a>
+        <a href="#run">Run it</a>
+      </nav>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/SahajIVVIX-1/AgentForge" rel="noopener">GitHub</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero wrap" id="top">
+      <h1>A research assistant that shows its sources and its failures.</h1>
+      <p class="lead">AgentForge runs a Researcher, an Analyst and a Reviewer in sequence. Every URL in a report comes from a real search or page fetch, and a run that goes wrong says so instead of returning a made-up answer.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="https://github.com/SahajIVVIX-1/AgentForge" rel="noopener">View the code</a>
+        <a class="btn btn-ghost" href="#run">Run it locally</a>
+      </div>
+      <p class="stack">Built with CrewAI, FastAPI, React, Vite and TypeScript.</p>
+    </section>
+
+    <section class="wrap block" id="pipeline" aria-labelledby="pipeline-h">
+      <h2 id="pipeline-h">Follow one question through the pipeline</h2>
+      <p class="intro">Select an agent to see what it hands to the next one.</p>
+
+      <div class="demo">
+        <p class="sample-note" role="note"><strong>Illustrative sample.</strong> Composed to show the output format. It was not produced by a model run, and the example.org sources are placeholders.</p>
+        <p class="demo-q"><span>Sample question</span> What are the main trade-offs between multi-agent and single-agent LLM systems?</p>
+
+        <div class="rail" role="tablist" aria-label="Pipeline stages" style="--stage:0">
+          <div class="rail-line" aria-hidden="true"><i class="rail-fill"></i></div>
+          <button type="button" role="tab" id="tab-0" aria-controls="pane-0" aria-selected="true" data-stage="0">
+            <span class="node" aria-hidden="true"></span>
+            <strong>Researcher</strong>
+            <small>Searches and reads pages</small>
+          </button>
+          <button type="button" role="tab" id="tab-1" aria-controls="pane-1" aria-selected="false" tabindex="-1" data-stage="1">
+            <span class="node" aria-hidden="true"></span>
+            <strong>Analyst</strong>
+            <small>Separates evidence from opinion</small>
+          </button>
+          <button type="button" role="tab" id="tab-2" aria-controls="pane-2" aria-selected="false" tabindex="-1" data-stage="2">
+            <span class="node" aria-hidden="true"></span>
+            <strong>Reviewer</strong>
+            <small>Audits claims, writes the report</small>
+          </button>
+        </div>
+
+        <section class="pane" id="pane-0" role="tabpanel" aria-labelledby="tab-0" tabindex="0">
+          <h3>Evidence notes</h3>
+          <ul class="trace" aria-label="Tool calls made">
+            <li><b>web_search</b> multi-agent LLM systems trade-offs</li>
+            <li><b>fetch_page</b> example.org/source-a</li>
+            <li><b>web_search</b> multi-agent LLM cost and latency</li>
+          </ul>
+          <ul class="notes">
+            <li>
+              <p>Specialized agents keep each prompt focused, which can improve quality on multi-step tasks.</p>
+              <p class="meta"><span class="tag tag-ok">Page read</span> example.org/source-a. Confidence: medium.</p>
+            </li>
+            <li>
+              <p>Every extra agent is another model call, so cost and latency go up.</p>
+              <p class="meta"><span class="tag tag-warn">Search result only</span> example.org/source-b. Confidence: medium.</p>
+            </li>
+            <li>
+              <p>Not verified: whether the benefit holds with small local models.</p>
+            </li>
+          </ul>
+          <p class="handoff">Hands to the Analyst: these notes and the source URLs.</p>
+        </section>
+
+        <section class="pane" id="pane-1" role="tabpanel" aria-labelledby="tab-1" tabindex="0">
+          <h3>Evidence and interpretation, kept apart</h3>
+          <dl class="split">
+            <div>
+              <dt>Evidence</dt>
+              <dd>One source reports that focused prompts help multi-step tasks. One search snippet reports higher cost with more model calls.</dd>
+            </div>
+            <div>
+              <dt>Interpretation</dt>
+              <dd>Multi-agent setups probably pay off when a task has distinct phases, and cost more without benefit when it does not.</dd>
+            </div>
+            <div>
+              <dt>Gaps</dt>
+              <dd>Nothing gathered on failure modes, such as agents repeating each other's mistakes.</dd>
+            </div>
+            <div>
+              <dt>Limitations</dt>
+              <dd>Only two sources, and one was not read in full.</dd>
+            </div>
+          </dl>
+          <p class="handoff">Hands to the Reviewer: the analysis and the researcher's original notes.</p>
+        </section>
+
+        <section class="pane" id="pane-2" role="tabpanel" aria-labelledby="tab-2" tabindex="0">
+          <h3>Final report</h3>
+          <div class="report">
+            <h4>Summary</h4>
+            <p>Multi-agent setups trade extra cost and latency for more focused steps. The evidence gathered is thin, so treat both points as leads to verify, not conclusions.</p>
+            <div class="failed" role="note">
+              <strong>Failed check</strong>
+              <p><code>claim_2_snippet_only</code>: the cost claim rests on a search snippet. The page itself was not read.</p>
+            </div>
+            <h4>Evidence</h4>
+            <ul class="src">
+              <li><span>example.org/source-a (placeholder)</span><span class="tag tag-ok">Page read</span></li>
+              <li><span>example.org/source-b (placeholder)</span><span class="tag tag-warn">Search result only</span></li>
+            </ul>
+            <h4>Limitations</h4>
+            <p>Two sources. No evidence on small local models.</p>
+          </div>
+          <p class="handoff">Returned to the browser as structured JSON, with the source list recorded by the tools.</p>
+        </section>
+      </div>
+    </section>
+
+    <section class="wrap block design" id="design" aria-labelledby="design-h">
+      <div class="design-head">
+        <h2 id="design-h">Built so a report can be checked</h2>
+        <p class="intro">Four choices that decide whether you can trust what comes back.</p>
+      </div>
+      <dl class="rules">
+        <div>
+          <dt>Sources come from tools, not from the model</dt>
+          <dd>The source list is recorded when the search and fetch tools run, so the model cannot add a URL to it. Each source says whether the page was read or only appeared in search results.</dd>
+        </div>
+        <div>
+          <dt>Failures stay failures</dt>
+          <dd>A model error, a timeout, or a missing source list ends the job as failed, with the reason. The interface never falls back to sample output.</dd>
+        </div>
+        <div>
+          <dt>Progress is real</dt>
+          <dd>The agent cards and timeline are driven by events emitted during the run: agent started, tool called, agent finished.</dd>
+        </div>
+        <div>
+          <dt>Long jobs do not hold a connection open</dt>
+          <dd>Starting a run returns a job id immediately and the browser polls for updates. Free hosting proxies tend to cut long requests, and this avoids that.</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="wrap block" id="interface" aria-labelledby="ui-h">
+      <h2 id="ui-h">The interface</h2>
+      <p class="intro">A sidebar, live agent cards, a timeline of backend events, and a report viewer with Markdown download.</p>
+      <div class="shots">
+        <figure>
+          <img src="img/ui-running.png" width="1360" height="860" loading="lazy" alt="AgentForge workspace during a run. The Researcher card shows Working with the page it is reading, and the timeline lists backend events.">
+          <figcaption>While the agents work.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/ui-report.png" width="1360" height="961" loading="lazy" alt="AgentForge workspace after a run, showing a report with summary, findings, evidence links and limitations.">
+          <figcaption>A finished report.</figcaption>
+        </figure>
+      </div>
+      <p class="caveat">Both screenshots were captured against a stubbed backend, so the report text is placeholder output from the test harness.</p>
+    </section>
+
+    <section class="wrap block" id="architecture" aria-labelledby="arch-h">
+      <h2 id="arch-h">How the pieces connect</h2>
+      <p class="intro">The browser starts a job and polls it. Worker threads run the crew, and the tools feed a source collector that the final result reads from.</p>
+      <figure class="diagram">
+        <svg viewBox="0 0 920 330" role="img" aria-labelledby="arch-t arch-d">
+          <title id="arch-t">AgentForge architecture</title>
+          <desc id="arch-d">The React UI posts a research request to FastAPI and polls for status. FastAPI hands the job to a job manager that runs a Researcher, Analyst and Reviewer in order. The Researcher uses web search and page fetch tools, which record every URL in a source collector. Tool calls record every URL into a source collector. The job manager combines the Reviewer's report with the collected sources.</desc>
+          <defs>
+            <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0L10 5L0 10z" fill="var(--muted)"/>
+            </marker>
+          </defs>
+          <g class="box"><rect x="10" y="125" width="150" height="70" rx="10"/><text x="85" y="157" text-anchor="middle">React UI</text><text class="sub" x="85" y="177" text-anchor="middle">Vite + TypeScript</text></g>
+          <g class="box"><rect x="210" y="125" width="150" height="70" rx="10"/><text x="285" y="157" text-anchor="middle">FastAPI</text><text class="sub" x="285" y="177" text-anchor="middle">/api/research</text></g>
+          <g class="box"><rect x="410" y="125" width="150" height="70" rx="10"/><text x="485" y="157" text-anchor="middle">Job manager</text><text class="sub" x="485" y="177" text-anchor="middle">thread per job</text></g>
+
+          <g class="agent"><rect x="640" y="20" width="270" height="52" rx="10"/><text x="775" y="52" text-anchor="middle">Researcher</text></g>
+          <g class="agent"><rect x="640" y="140" width="270" height="52" rx="10"/><text x="775" y="172" text-anchor="middle">Analyst</text></g>
+          <g class="agent"><rect x="640" y="258" width="270" height="52" rx="10"/><text x="775" y="290" text-anchor="middle">Reviewer</text></g>
+
+          <g class="box tool"><rect x="410" y="12" width="170" height="68" rx="10"/><text x="495" y="42" text-anchor="middle">web_search</text><text class="sub" x="495" y="62" text-anchor="middle">fetch_page</text></g>
+          <g class="box tool"><rect x="190" y="12" width="170" height="68" rx="10"/><text x="275" y="42" text-anchor="middle">Source collector</text><text class="sub" x="275" y="62" text-anchor="middle">every URL touched</text></g>
+
+          <g class="edge">
+            <path d="M160 150 H206" marker-end="url(#ah)"/>
+            <path d="M210 172 H164" marker-end="url(#ah)" stroke-dasharray="4 4"/>
+            <path d="M360 160 H406" marker-end="url(#ah)"/>
+            <path d="M560 150 C600 150 600 46 636 46" marker-end="url(#ah)"/>
+            <path d="M775 72 V136" marker-end="url(#ah)"/>
+            <path d="M775 192 V254" marker-end="url(#ah)"/>
+            <path d="M636 46 H584" marker-end="url(#ah)" stroke-dasharray="4 4"/>
+            <path d="M406 46 H364" marker-end="url(#ah)"/>
+            <path d="M300 80 V100 H470 V121" marker-end="url(#ah)"/>
+            <path d="M636 284 C540 284 485 250 485 199" marker-end="url(#ah)" stroke-dasharray="4 4"/>
+          </g>
+          <text class="note" x="168" y="214">poll for status</text>
+        </svg>
+        <figcaption>Solid arrows are control flow. Dashed arrows are polling, tool results, and the finished report returning to the job manager.</figcaption>
+      </figure>
+    </section>
+
+    <section class="wrap block" id="status" aria-labelledby="status-h">
+      <h2 id="status-h">What has been verified</h2>
+      <p class="intro">Measured on the first commit. Nothing here is estimated.</p>
+      <div class="status-grid">
+        <div>
+          <h3>Measured</h3>
+          <table>
+            <caption class="sr">Measured results</caption>
+            <tbody>
+              <tr><th scope="row">Backend tests</th><td>21 passing: validation, missing model, success, failure, timeout, CORS, URL guard, parsing</td></tr>
+              <tr><th scope="row">Frontend unit tests</th><td>5 passing, 0 lint warnings</td></tr>
+              <tr><th scope="row">Production build</th><td>353 kB JavaScript, 109 kB gzipped</td></tr>
+              <tr><th scope="row">Browser run in Chromium</th><td>Form validation, live progress, report, download, history, failed run, and a mobile layout with no horizontal scroll, against a stubbed backend</td></tr>
+              <tr><th scope="row">Clean checkout</th><td>Fresh clone, fresh install, all of the above passes</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h3>Not yet verified</h3>
+          <ul class="open">
+            <li>A full run against a live language model.</li>
+            <li>How well the free DuckDuckGo-based search holds up under real use.</li>
+            <li>A deployed backend. This site is static and does not call one.</li>
+          </ul>
+          <p class="caveat">Results from live runs will be added here once they exist.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap block" id="run" aria-labelledby="run-h">
+      <h2 id="run-h">Run it on your machine</h2>
+      <p class="intro">You need Python 3.10 or newer, Node 20 or newer, Git, and one model: a Gemini or Groq API key, or a local Ollama install.</p>
+      <ol class="steps">
+        <li>
+          <h3>Clone and set up</h3>
+          <p>The setup script creates the Python environment, installs both halves, and copies the <code>.env</code> templates.</p>
+        </li>
+        <li>
+          <h3>Add your model</h3>
+          <p>Open <code>backend/.env</code> and set <code>AGENTFORGE_MODEL</code> and <code>AGENTFORGE_API_KEY</code>. For Ollama, use <code>ollama/llama3.1</code> and <code>AGENTFORGE_BASE_URL=http://localhost:11434</code>.</p>
+        </li>
+        <li>
+          <h3>Start both servers</h3>
+          <p>Open <a href="http://localhost:5173" rel="noopener">localhost:5173</a>. The header should read "Backend connected" next to your model name.</p>
+        </li>
+      </ol>
+      <div class="code">
+        <button type="button" class="copy" id="copy" aria-describedby="copy-s">Copy</button>
+        <span class="sr" id="copy-s" role="status" aria-live="polite"></span>
+<pre><code id="cmd">git clone https://github.com/SahajIVVIX-1/AgentForge.git
+cd AgentForge
+scripts/setup.sh        # Windows: scripts\setup.ps1
+# edit backend/.env: model and API key
+scripts/dev.sh          # Windows: scripts\dev.ps1</code></pre>
+      </div>
+      <p class="caveat">Small local models can struggle with structured output. When that happens the report is shown as raw text with a visible failed check.</p>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot-row">
+      <p>Built by Sahaj Saliya as a portfolio project. CrewAI is used as a dependency for orchestration; everything else was written for this project.</p>
+      <p><a href="https://github.com/SahajIVVIX-1/AgentForge" rel="noopener">Source on GitHub</a></p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
