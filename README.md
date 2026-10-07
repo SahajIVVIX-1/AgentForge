@@ -5,7 +5,7 @@
 
 A multi-agent AI research assistant that **shows its sources and its failures**. You ask a question; three [CrewAI](https://github.com/crewAIInc/crewAI) agents work in sequence and return a sourced report.
 
-**Project site:** https://sahajivvix-1.github.io/AgentForge/
+**Project site:** https://info.sahaj.si/AgentForge/
 
 | Agent | Job |
 |---|---|
